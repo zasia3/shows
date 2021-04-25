@@ -32,6 +32,7 @@ class ShowsViewController: UIViewController {
         toggle.isOn = false
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        toggle.onTintColor = UIColor(named: "Accent")
         return toggle
     }()
     
@@ -163,7 +164,6 @@ extension ShowsViewController: UITableViewDelegate {
 
 extension ShowsViewController: ShowsViewModelDelegate {
     func didUpdateCell(at index: Int) {
-        
         tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
     

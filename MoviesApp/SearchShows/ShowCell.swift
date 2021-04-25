@@ -17,8 +17,17 @@ class ShowCell: UITableViewCell {
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textColor = UIColor(named: "Hero")
+        label.textColor = UIColor(named: "Text")
         return label
+    }()
+    
+    lazy var favouriteImageView: UIImageView = {
+        let img = UIImageView()
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.contentMode = .scaleAspectFit
+        img.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        img.tintColor = UIColor(named: "Accent")
+        return img
     }()
     
     lazy var showImageView: UIImageView = {
@@ -29,12 +38,22 @@ class ShowCell: UITableViewCell {
         return img
     }()
     
+    lazy var detailsStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.alignment = .leading
+        stack.distribution = .equalSpacing
+        stack.spacing = 5
+        return stack
+    }()
+    
     lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.alignment = .center
-        stack.distribution = .equalSpacing
+        stack.distribution = .fillEqually
         stack.spacing = 5
         return stack
     }()
@@ -50,7 +69,9 @@ class ShowCell: UITableViewCell {
     func configure() {
         let inset = CGFloat(10)
         stackView.addArrangedSubview(showImageView)
-        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(detailsStackView)
+        detailsStackView.addArrangedSubview(favouriteImageView)
+        detailsStackView.addArrangedSubview(titleLabel)
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([

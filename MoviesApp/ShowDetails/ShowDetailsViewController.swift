@@ -10,10 +10,34 @@ import UIKit
 class ShowDetailsViewController: UIViewController {
     private var viewModel: ShowDetailsViewModelProtocol
     
+    lazy var imageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView.contentMode = .scaleAspectFit
+        imgView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        if let url = viewModel.showDetails.show.image?.localUrl {
+            imgView.image = UIImage(contentsOfFile: url.path)
+        } else {
+            imgView.image = UIImage(systemName: "camera.on.rectangle")
+            imgView.tintColor = UIColor(named: "Hero")
+        }
+        return imgView
+    }()
+    
+    lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.showsHorizontalScrollIndicator = false
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.showDetails.show.name
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 25)
+        label.textColor = UIColor(named: "Hero")
         return label
     }()
     
@@ -22,6 +46,7 @@ class ShowDetailsViewController: UIViewController {
         toggle.isOn = false
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        toggle.onTintColor = UIColor(named: "Accent")
         return toggle
     }()
     
@@ -46,7 +71,7 @@ class ShowDetailsViewController: UIViewController {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.alignment = .leading
+        stack.alignment = .fill
         stack.distribution = .equalSpacing
         stack.spacing = 5
         return stack
@@ -65,14 +90,15 @@ class ShowDetailsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Show episodes", for: .normal)
         button.addTarget(self, action: #selector(tappedShowEpisodes), for: .touchUpInside)
-        button.setTitleColor(UIColor(named: "Hero"), for: .normal)
+        button.setTitleColor(UIColor(named: "Text"), for: .normal)
         return button
     }()
+    
+    let contentView = UIView()
     
     init(viewModel: ShowDetailsViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -86,10 +112,12 @@ class ShowDetailsViewController: UIViewController {
     }
     
     private func setupLayout() {
-        let inset = CGFloat(10)
         favouritesToggle.isOn = viewModel.isFavourite
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(stackView)
         
-        view.addSubview(stackView)
+        stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(titleLabel)
         favouriteStackView.addArrangedSubview(favouriteLabel)
         favouriteStackView.addArrangedSubview(favouritesToggle)
@@ -97,12 +125,28 @@ class ShowDetailsViewController: UIViewController {
         stackView.addArrangedSubview(crewLabel)
         stackView.addArrangedSubview(episodesButton)
         
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: inset),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: inset),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -inset),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -inset)
-        ])
+        setupScrollViewLayout()
+        setupContentViewLayout()
+        setupStackViewLayout()
+    }
+    
+    private func setupScrollViewLayout() {
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        scrollView.constraintHorizontally(to: view)
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    func setupContentViewLayout() {
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.constraintVertically(to: scrollView)
+    }
+    
+    func setupStackViewLayout() {
+        stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        stackView.constraintHorizontally(to: contentView, constant: 5)
+        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
     }
     
     @objc func switchValueDidChange() {
@@ -113,8 +157,4 @@ class ShowDetailsViewController: UIViewController {
         let episodesViewController = EpisodesViewController(episodes: viewModel.showDetails.episodes)
         present(episodesViewController, animated: true, completion: nil)
     }
-}
-
-extension ShowDetailsViewController: ShowDetailsViewModelDelegate {
-    
 }

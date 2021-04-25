@@ -14,7 +14,7 @@ public protocol FavouritesProtocol {
     func clear()
 }
 
-public struct Favourites {
+public struct Favourites: FavouritesProtocol {
     let defaults: UserDefaults
     private let showsKey = "favourite_shows"
     

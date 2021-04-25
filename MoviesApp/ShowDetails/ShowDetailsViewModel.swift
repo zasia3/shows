@@ -9,12 +9,7 @@ import Foundation
 import Models
 import Common
 
-protocol ShowDetailsViewModelDelegate: AnyObject {
-    
-}
-
 protocol ShowDetailsViewModelProtocol {
-    var delegate: ShowDetailsViewModelDelegate? { get set }
     var showDetails: ShowDetails { get }
     var crew: CrewMember? { get }
     var isFavourite: Bool { get }
@@ -23,19 +18,17 @@ protocol ShowDetailsViewModelProtocol {
 
 class ShowDetailsViewModel: ShowDetailsViewModelProtocol {
     private(set) var showDetails: ShowDetails
-    private var favouritesHandler: Favourites
-    weak var delegate: ShowDetailsViewModelDelegate?
+    private var favouritesHandler: FavouritesProtocol
     
     var crew: CrewMember? {
         showDetails.crew.first { $0.type == .creator } ?? showDetails.crew.first
     }
     
     var isFavourite: Bool {
-        let favourites = favouritesHandler.favouriteShowIds()
-        return favourites.contains(showDetails.show.id)
+        showDetails.show.isFavourite(in: favouritesHandler)
     }
     
-    init(showDetails: ShowDetails, favouritesHandler: Favourites) {
+    init(showDetails: ShowDetails, favouritesHandler: FavouritesProtocol) {
         self.showDetails = showDetails
         self.favouritesHandler = favouritesHandler
     }
@@ -48,3 +41,4 @@ class ShowDetailsViewModel: ShowDetailsViewModelProtocol {
         favouritesHandler.delete(showDetails.show.id)
     }
 }
+

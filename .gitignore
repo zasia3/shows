@@ -1,0 +1,6 @@
+
+**.xcworkspace
+**.xcworkspace/**
+**/project.xcworkspace/**
+**/xcuserdata/**
+**xcuserdata/*

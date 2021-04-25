@@ -31,7 +31,7 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     weak var delegate: ShowsViewModelDelegate?
     
     private var searchHandler: SearchHandlerProtocol
-    private var favouritesHandler: Favourites
+    private var favouritesHandler: FavouritesProtocol
     private var detailsLoader: DetailsLoaderProtocol
     private var imagesLoader: ImagesLoaderProtocol
     var showFavourites = false
@@ -47,7 +47,7 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
 
     var currentSearchTerm: String?
     
-    init(searchHandler: SearchHandlerProtocol, favouritesHandler: Favourites, detailsLoader: DetailsLoaderProtocol, imagesLoader: ImagesLoaderProtocol) {
+    init(searchHandler: SearchHandlerProtocol, favouritesHandler: FavouritesProtocol, detailsLoader: DetailsLoaderProtocol, imagesLoader: ImagesLoaderProtocol) {
         self.searchHandler = searchHandler
         self.favouritesHandler = favouritesHandler
         self.detailsLoader = detailsLoader
@@ -76,7 +76,7 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     }
     
     func selectedShow(at indexPath: IndexPath) {
-        detailsLoader.loadDetails(of: shows[indexPath.row]) { [weak self] showDetails in
+        detailsLoader.loadDetails(of: filteredShows[indexPath.row]) { [weak self] showDetails in
             self?.delegate?.didRetrieveShowDetails(showDetails)
         }
     }
@@ -95,6 +95,8 @@ extension ShowsViewModel {
         if let localUrl = show.image?.localUrl {
             cell.imageView?.image = UIImage(contentsOfFile: localUrl.path)
         }
+        let imageName = show.isFavourite(in: favouritesHandler) ? "star.fill" : "star"
+        cell.favouriteImageView.image = UIImage(systemName: imageName)
         return cell
     }
 }

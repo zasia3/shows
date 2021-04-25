@@ -10,7 +10,6 @@ import Models
 
 public enum APIError: Error {
     case invalidUrl
-    case noMovies
     case noData
     case decode(String)
     case other(Error?)
@@ -20,7 +19,6 @@ public protocol APIProtocol {
     func getShows(searchTerm term: String, completion: @escaping (Result<[Show], APIError>) -> Void)
     func getCrew(showId: String, completion: @escaping (Result<[CrewMember], APIError>) -> Void)
     func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void)
-    func getImage(url: URL, completion: @escaping (Result<UIImage, APIError>) -> Void)
 }
 
 public final class API: APIProtocol {
@@ -54,11 +52,6 @@ public final class API: APIProtocol {
         makeRequest(url, with: decodeSimpleResponse, then: completion)
     }
     
-    public func getImage(url: URL, completion: @escaping (Result<UIImage, APIError>) -> Void) {
-        makeDownloadRequest(url, then: completion)
-    }
-    
-    
     func makeRequest<T: Decodable>(_ url: URL?, with decodeFunction: @escaping DecodeFunction<T>, then completion: @escaping APIResult<T>) {
         
         guard let url = url else {
@@ -84,34 +77,6 @@ public final class API: APIProtocol {
             completion(.success(decodedData))
         }
         
-        task.resume()
-    }
-    
-    func makeDownloadRequest(_ url: URL, then completion: @escaping (Result<UIImage, APIError>) -> Void) {
-        let task = session.dataTask(with: url) { data, response, error in
-            
-//            guard let self = self else { return }
-            
-            if let error = error {
-                completion(.failure(.other(error)))
-                return
-            }
-            guard let data = data else {
-                completion(.failure(.noData))
-                return
-            }
-                
-//            guard let downloadDirectory = self.downloadDirectory else {
-//                completion(.failure(.other(nil)))
-//                return
-//            }
-        
-            if let image = UIImage(data: data) {
-                completion(.success(image))
-            } else {
-                completion(.failure(.other(nil)))
-            }
-        }
         task.resume()
     }
     
