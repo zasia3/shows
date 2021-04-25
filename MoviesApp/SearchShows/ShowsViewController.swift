@@ -162,6 +162,11 @@ extension ShowsViewController: UITableViewDelegate {
 }
 
 extension ShowsViewController: ShowsViewModelDelegate {
+    func didUpdateCell(at index: Int) {
+        
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
+    
     func didReceiveShows() {
         tableView.reloadData()
     }

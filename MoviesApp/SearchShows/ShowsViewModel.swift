@@ -9,12 +9,15 @@ import UIKit
 import Models
 import API
 import Common
+import DataLoader
 
 protocol ShowsViewModelDelegate: AnyObject {
     func didReceiveShows()
     func didClearData()
     func didReceiveError(_ error: APIError)
     func didRetrieveShowDetails(_ details: ShowDetails)
+    func didUpdateCell(at index: Int)
+    
 }
 protocol ShowsViewModelProtocol: UITableViewDataSource {
     var delegate: ShowsViewModelDelegate? { get set }
@@ -29,6 +32,8 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     
     private var searchHandler: SearchHandlerProtocol
     private var favouritesHandler: Favourites
+    private var detailsLoader: DetailsLoaderProtocol
+    private var imagesLoader: ImagesLoaderProtocol
     var showFavourites = false
     var shows = [Show]()
     var filteredShows: [Show] {
@@ -42,14 +47,19 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
 
     var currentSearchTerm: String?
     
-    init(searchHandler: SearchHandlerProtocol, favouritesHandler: Favourites) {
+    init(searchHandler: SearchHandlerProtocol, favouritesHandler: Favourites, detailsLoader: DetailsLoaderProtocol, imagesLoader: ImagesLoaderProtocol) {
         self.searchHandler = searchHandler
         self.favouritesHandler = favouritesHandler
+        self.detailsLoader = detailsLoader
+        self.imagesLoader = imagesLoader
         super.init()
         self.searchHandler.delegate = self
     }
     
     func textDidChange(to term: String?) {
+        defer {
+            imagesLoader.cancelDownloading()
+        }
         guard let term = term,
               !term.isEmpty else {
             shows = []
@@ -66,8 +76,9 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     }
     
     func selectedShow(at indexPath: IndexPath) {
-        let showDetails = ShowDetails(show: shows[indexPath.row], crew: [], episodes: [])
-        delegate?.didRetrieveShowDetails(showDetails)
+        detailsLoader.loadDetails(of: shows[indexPath.row]) { [weak self] showDetails in
+            self?.delegate?.didRetrieveShowDetails(showDetails)
+        }
     }
 }
 
@@ -81,6 +92,9 @@ extension ShowsViewModel {
         let show = filteredShows[indexPath.row]
         cell.titleLabel.text = show.name
         cell.imageUrl = show.image?.url
+        if let localUrl = show.image?.localUrl {
+            cell.imageView?.image = UIImage(contentsOfFile: localUrl.path)
+        }
         return cell
     }
 }
@@ -91,7 +105,29 @@ extension ShowsViewModel: SearchHandlerDelegate {
         DispatchQueue.main.async {
             self.delegate?.didReceiveShows()
         }
+        shows.enumerated().forEach { [weak self] index, show in
+            if let url = show.image?.url {
+                self?.downloadImage(fromUrl: url, index: index)
+            }
+        }
+        
     }
+    
+    func downloadImage(fromUrl url: URL, index: Int) {
+        imagesLoader.downloadFromUrl(url) { [weak self] progress in
+            guard let self = self else { return }
+            switch progress {
+            case .downloaded(let url):
+                self.shows[index].image?.localUrl = url
+                DispatchQueue.main.async {
+                    self.delegate?.didUpdateCell(at: index)
+                }
+            default:
+                break
+            }
+        }
+    }
+    
     func didReceiveError(_ error: APIError) {
         DispatchQueue.main.async {
             self.delegate?.didReceiveError(error)

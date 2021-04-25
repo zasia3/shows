@@ -18,25 +18,15 @@ public enum APIError: Error {
 
 public protocol APIProtocol {
     func getShows(searchTerm term: String, completion: @escaping (Result<[Show], APIError>) -> Void)
+    func getCrew(showId: String, completion: @escaping (Result<[CrewMember], APIError>) -> Void)
+    func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void)
+    func getImage(url: URL, completion: @escaping (Result<UIImage, APIError>) -> Void)
 }
 
 public final class API: APIProtocol {
     typealias DecodeFunction<T: Decodable> = (Data) -> T?
     typealias APIResult<T: Decodable> = (Result<T, APIError>) -> Void
-    
-//    lazy var downloadDirectory: URL? = {
-//        guard let url = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else { return nil }
-//        let directory = url.appendingPathComponent("Download")
-//        do {
-//            if !FileManager.default.fileExists(atPath: directory.path) {
-//                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-//            }
-//        } catch let error {
-//            print(error.localizedDescription)
-//        }
-//        return directory
-//    }()
-    
+
     private let session: URLSession
     
     private let baseUrl = "https://api.tvmaze.com"
@@ -60,7 +50,7 @@ public final class API: APIProtocol {
     }
     
     public func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void) {
-        let url = URL(string: "\(baseUrl)/episodes/\(showId)")
+        let url = URL(string: "\(baseUrl)/shows/\(showId)/episodes")
         makeRequest(url, with: decodeSimpleResponse, then: completion)
     }
     

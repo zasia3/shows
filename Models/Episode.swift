@@ -8,9 +8,9 @@
 import Foundation
 
 public struct Episode: Decodable {
-    public let id: String
+    public let id: Int
     public let name: String
     public let airdate: String
     public let airtime: String
-    public let summary: String
+    public let summary: String?
 }

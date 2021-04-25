@@ -15,7 +15,7 @@ public struct Show: Decodable, Hashable {
     public let id: Int
     public let name: String
     public let url: String
-    public let image: Image?
+    public var image: Image?
     
     public init(id: Int, name: String, url: String, image: Image?) {
         self.id = id
