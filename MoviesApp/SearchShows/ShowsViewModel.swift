@@ -9,6 +9,7 @@ import UIKit
 import Models
 import API
 import Common
+import DataLoader
 
 protocol ShowsViewModelDelegate: AnyObject {
     func didReceiveShows()
@@ -29,6 +30,7 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     
     private var searchHandler: SearchHandlerProtocol
     private var favouritesHandler: Favourites
+    private var detailsLoader: DetailsLoaderProtocol
     var showFavourites = false
     var shows = [Show]()
     var filteredShows: [Show] {
@@ -42,9 +44,10 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
 
     var currentSearchTerm: String?
     
-    init(searchHandler: SearchHandlerProtocol, favouritesHandler: Favourites) {
+    init(searchHandler: SearchHandlerProtocol, favouritesHandler: Favourites, detailsLoader: DetailsLoaderProtocol) {
         self.searchHandler = searchHandler
         self.favouritesHandler = favouritesHandler
+        self.detailsLoader = detailsLoader
         super.init()
         self.searchHandler.delegate = self
     }
@@ -66,8 +69,9 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     }
     
     func selectedShow(at indexPath: IndexPath) {
-        let showDetails = ShowDetails(show: shows[indexPath.row], crew: [], episodes: [])
-        delegate?.didRetrieveShowDetails(showDetails)
+        detailsLoader.loadDetails(of: shows[indexPath.row]) { [weak self] showDetails in
+            self?.delegate?.didRetrieveShowDetails(showDetails)
+        }
     }
 }
 

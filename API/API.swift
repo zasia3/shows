@@ -18,6 +18,9 @@ public enum APIError: Error {
 
 public protocol APIProtocol {
     func getShows(searchTerm term: String, completion: @escaping (Result<[Show], APIError>) -> Void)
+    func getCrew(showId: String, completion: @escaping (Result<[CrewMember], APIError>) -> Void)
+    func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void)
+    func getImage(url: URL, completion: @escaping (Result<UIImage, APIError>) -> Void)
 }
 
 public final class API: APIProtocol {
@@ -60,7 +63,7 @@ public final class API: APIProtocol {
     }
     
     public func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void) {
-        let url = URL(string: "\(baseUrl)/episodes/\(showId)")
+        let url = URL(string: "\(baseUrl)/shows/\(showId)/episodes")
         makeRequest(url, with: decodeSimpleResponse, then: completion)
     }
     

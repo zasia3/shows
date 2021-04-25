@@ -8,11 +8,14 @@
 import Foundation
 import API
 import Common
+import DataLoader
+import Models
 
 class Dependencies {
     
     let api = API()
     let favourites = Favourites()
+    lazy var detailsLoader = DetailsLoader(api: api)
     
     func createSearchHandler() -> SearchHandlerProtocol {
         return SearchHandler(api: api)
@@ -20,7 +23,7 @@ class Dependencies {
     
     func createShowsViewModel() -> ShowsViewModelProtocol {
         let searchHandler = createSearchHandler()
-        return ShowsViewModel(searchHandler: searchHandler, favouritesHandler: favourites)
+        return ShowsViewModel(searchHandler: searchHandler, favouritesHandler: favourites, detailsLoader: detailsLoader)
     }
     
     func createShowDetailsViewModel(showDetails: ShowDetails) -> ShowDetailsViewModelProtocol {

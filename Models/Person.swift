@@ -8,6 +8,6 @@
 import Foundation
 
 public struct Person: Decodable {
-    public let id: String
+    public let id: Int
     public let name: String
 }
