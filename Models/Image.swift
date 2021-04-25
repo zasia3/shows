@@ -9,6 +9,7 @@ import Foundation
 
 public struct Image: Decodable, Hashable {
     public let url: URL?
+    public var localUrl: URL?
     
     enum CodingKeys: CodingKey {
         case medium

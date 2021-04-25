@@ -27,6 +27,9 @@
 		AD1C3CC826359BD900CE4615 /* DetailsLoadingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C3CC726359BD900CE4615 /* DetailsLoadingOperation.swift */; };
 		AD1C3CCE26359C7000CE4615 /* DetailsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C3CCD26359C7000CE4615 /* DetailsLoader.swift */; };
 		AD1C3CD326359D0200CE4615 /* ShowDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C3C1B2635853600CE4615 /* ShowDetails.swift */; };
+		AD1C3CF02635AD5C00CE4615 /* ImagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C3CEF2635AD5C00CE4615 /* ImagesLoader.swift */; };
+		AD1C3CFB2635AF7B00CE4615 /* ImageLoadingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C3CFA2635AF7B00CE4615 /* ImageLoadingTask.swift */; };
+		AD1C3D012635B28300CE4615 /* ImageFileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C3D002635B28300CE4615 /* ImageFileHandler.swift */; };
 		AD2867D026354AE100300DEE /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2867CF26354AE100300DEE /* Image.swift */; };
 		AD2867D826354CE300300DEE /* CrewMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2867D726354CE300300DEE /* CrewMember.swift */; };
 		AD2867DD26354E8700300DEE /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2867DC26354E8700300DEE /* Person.swift */; };
@@ -178,6 +181,9 @@
 		AD1C3CC126359B7B00CE4615 /* EpisodesLoadingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesLoadingOperation.swift; sourceTree = "<group>"; };
 		AD1C3CC726359BD900CE4615 /* DetailsLoadingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsLoadingOperation.swift; sourceTree = "<group>"; };
 		AD1C3CCD26359C7000CE4615 /* DetailsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsLoader.swift; sourceTree = "<group>"; };
+		AD1C3CEF2635AD5C00CE4615 /* ImagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesLoader.swift; sourceTree = "<group>"; };
+		AD1C3CFA2635AF7B00CE4615 /* ImageLoadingTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingTask.swift; sourceTree = "<group>"; };
+		AD1C3D002635B28300CE4615 /* ImageFileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileHandler.swift; sourceTree = "<group>"; };
 		AD2867CF26354AE100300DEE /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		AD2867D726354CE300300DEE /* CrewMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewMember.swift; sourceTree = "<group>"; };
 		AD2867DC26354E8700300DEE /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
@@ -297,6 +303,7 @@
 				AD1C3CD82635A04900CE4615 /* DetatilsLoader */,
 				AD1C3C9926359A0D00CE4615 /* DataLoader.h */,
 				AD1C3C9A26359A0D00CE4615 /* Info.plist */,
+				AD1C3CF52635AF6B00CE4615 /* ImagesLoader */,
 			);
 			path = DataLoader;
 			sourceTree = "<group>";
@@ -310,6 +317,16 @@
 				AD1C3CCD26359C7000CE4615 /* DetailsLoader.swift */,
 			);
 			path = DetatilsLoader;
+			sourceTree = "<group>";
+		};
+		AD1C3CF52635AF6B00CE4615 /* ImagesLoader */ = {
+			isa = PBXGroup;
+			children = (
+				AD1C3CEF2635AD5C00CE4615 /* ImagesLoader.swift */,
+				AD1C3CFA2635AF7B00CE4615 /* ImageLoadingTask.swift */,
+				AD1C3D002635B28300CE4615 /* ImageFileHandler.swift */,
+			);
+			path = ImagesLoader;
 			sourceTree = "<group>";
 		};
 		AD2867F22635657A00300DEE /* SearchShows */ = {
@@ -720,10 +737,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD1C3D012635B28300CE4615 /* ImageFileHandler.swift in Sources */,
 				AD1C3CC226359B7B00CE4615 /* EpisodesLoadingOperation.swift in Sources */,
+				AD1C3CF02635AD5C00CE4615 /* ImagesLoader.swift in Sources */,
 				AD1C3CBC26359A5000CE4615 /* CrewLoadingOperation.swift in Sources */,
 				AD1C3CC826359BD900CE4615 /* DetailsLoadingOperation.swift in Sources */,
 				AD1C3CCE26359C7000CE4615 /* DetailsLoader.swift in Sources */,
+				AD1C3CFB2635AF7B00CE4615 /* ImageLoadingTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

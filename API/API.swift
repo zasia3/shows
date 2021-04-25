@@ -26,20 +26,7 @@ public protocol APIProtocol {
 public final class API: APIProtocol {
     typealias DecodeFunction<T: Decodable> = (Data) -> T?
     typealias APIResult<T: Decodable> = (Result<T, APIError>) -> Void
-    
-//    lazy var downloadDirectory: URL? = {
-//        guard let url = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else { return nil }
-//        let directory = url.appendingPathComponent("Download")
-//        do {
-//            if !FileManager.default.fileExists(atPath: directory.path) {
-//                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-//            }
-//        } catch let error {
-//            print(error.localizedDescription)
-//        }
-//        return directory
-//    }()
-    
+
     private let session: URLSession
     
     private let baseUrl = "https://api.tvmaze.com"
