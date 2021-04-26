@@ -12,7 +12,11 @@ class Task {
     let pathURL: URL
     let sessionTask: URLSessionDownloadTask
     var progress: Progress = .ready {
-        willSet { if case .cancelled = newValue { sessionTask.cancel() } }
+        willSet {
+            if case .cancelled = newValue {
+                sessionTask.cancel()
+            }
+        }
         didSet {
             switch oldValue {
                 case .ready:
@@ -31,8 +35,8 @@ class Task {
 }
 
 class Tasks {
-    var ids = [Int : Task]()
-    var paths: [URL : Task] = [:]
+    var ids = [Int: Task]()
+    var paths = [URL: Task]()
 
     func add(_ task: Task) {
         ids[task.id] = task
@@ -51,12 +55,20 @@ extension Tasks : Sequence {
     }
 
     subscript(taskID: Int) -> Task? {
-        set { ids[taskID] = newValue }
-        get { return ids[taskID] }
+        set {
+            ids[taskID] = newValue
+        }
+        get {
+            return ids[taskID]
+        }
     }
 
     subscript(pathURL: URL) -> Task? {
-        set { paths[pathURL] = newValue }
-        get { return paths[pathURL] }
+        set {
+            paths[pathURL] = newValue
+        }
+        get {
+            return paths[pathURL]
+        }
     }
 }
