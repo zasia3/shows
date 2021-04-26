@@ -10,7 +10,7 @@ import Models
 import Common
 
 extension Show {
-    func isFavourite(in favouritesHandler: FavouritesProtocol) -> Bool {
+    func isFavourite(in favouritesHandler: ShowsStorageProtocol) -> Bool {
         let favourites = favouritesHandler.favouriteShowIds()
         return favourites.contains(id)
     }

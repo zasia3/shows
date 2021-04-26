@@ -14,7 +14,7 @@ public protocol DetailsLoaderProtocol {
 }
 
 public class DetailsLoader: DetailsLoaderProtocol {
-    let api: APIProtocol
+    let api: ShowDetailsAPIProtocol
     var crew = [CrewMember]()
     var episodes = [Episode]()
     
@@ -24,7 +24,7 @@ public class DetailsLoader: DetailsLoaderProtocol {
         return queue
     }()
     
-    public init(api: APIProtocol) {
+    public init(api: ShowDetailsAPIProtocol) {
         self.api = api
     }
     

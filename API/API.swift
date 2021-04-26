@@ -15,11 +15,16 @@ public enum APIError: Error {
     case other(Error?)
 }
 
-public protocol APIProtocol {
+public protocol ShowsAPIProtocol {
     func getShows(searchTerm term: String, completion: @escaping (Result<[Show], APIError>) -> Void)
+}
+
+public protocol ShowDetailsAPIProtocol {
     func getCrew(showId: String, completion: @escaping (Result<[CrewMember], APIError>) -> Void)
     func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void)
 }
+
+public typealias APIProtocol = ShowsAPIProtocol & ShowDetailsAPIProtocol
 
 public final class API: APIProtocol {
     typealias DecodeFunction<T: Decodable> = (Data) -> T?
@@ -34,7 +39,7 @@ public final class API: APIProtocol {
     }
     
     public func getShows(searchTerm term: String, completion: @escaping (Result<[Show], APIError>) -> Void) {
-        let url = URL(string: "\(baseUrl)/search/shows?q=\(term)")
+        let url = URL(string: "\(baseUrl)/search/shows?q=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")
         func decodeShow(_ data: Data) -> [Show] {
             guard let decodedResponse = try? JSONDecoder().decode([ShowSearchResult].self, from: data) else { return [] }
             return decodedResponse.compactMap { $0.show }

@@ -23,32 +23,24 @@ public class ImagesLoader: NSObject, ImagesLoaderProtocol {
     
     public typealias Completion = ((Progress) -> Void)
     
-    private lazy var session: URLSession = {
+    private lazy var defaultSession: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "ImageLoadingSession")
         return URLSession(configuration: configuration, delegate: self, delegateQueue: .main)
     }()
     
-    private var downloadDirectory: URL? {
-        guard let url = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else { return nil }
-        let directory = url.appendingPathComponent("Download")
-        
-        do {
-            if !FileManager.default.fileExists(atPath: directory.path) {
-                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-            }
-        } catch let error {
-            print(error.localizedDescription)
-        }
-        
-        return directory
+    private let privateSession: URLSession?
+    private var session: URLSession {
+        privateSession ?? defaultSession
     }
     
-    private var imagesFileHandler: ImageFileHandlerProtocol
-    
+    private let downloadDirectory: URL?
+    private let imagesFileHandler: ImageFileHandlerProtocol
     private var tasks = Tasks()
     
-    public init(imagesFileHandler: ImageFileHandlerProtocol? = nil) {
+    public init(session: URLSession? = nil, imagesFileHandler: ImageFileHandlerProtocol? = nil, downloadDirectory: URL?) {
         self.imagesFileHandler = imagesFileHandler ?? ImageFileHandler()
+        self.downloadDirectory = downloadDirectory
+        self.privateSession = session
     }
     
     public func downloadFromUrl(_ url: URL, completion: @escaping Completion) {
@@ -59,7 +51,7 @@ public class ImagesLoader: NSObject, ImagesLoaderProtocol {
             task.completions.append(completion)
             return
         }
-
+        
         let sessionTask = session.downloadTask(with: url)
          
         let task = Task(pathURL: pathUrl, sessionTask: sessionTask)

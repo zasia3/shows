@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Show: Decodable, Hashable {
+public struct Show: Codable, Hashable {
     public static func == (lhs: Show, rhs: Show) -> Bool {
         return lhs.id == rhs.id
     }

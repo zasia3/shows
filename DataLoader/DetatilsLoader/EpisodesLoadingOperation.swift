@@ -13,7 +13,7 @@ import Models
 public class EpisodesLoadingOperation: DetailsLoadingOperation {
     private let completion: (Result<[Episode], APIError>) -> Void
     
-    public init(api: APIProtocol, showId: Int, completion: @escaping (Result<[Episode], APIError>) -> Void) {
+    public init(api: ShowDetailsAPIProtocol, showId: Int, completion: @escaping (Result<[Episode], APIError>) -> Void) {
         self.completion = completion
         super.init(api: api, showId: showId)
     }

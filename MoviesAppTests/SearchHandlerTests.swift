@@ -22,9 +22,8 @@ class SearchHandlerTests: XCTestCase {
     }
 
     func testSuccessfulSearch() throws {
-        let show = Show(id: 1, name: "test", url: "https://test.com")
-        let showResult = ShowSearchResult(score: 2.03, show: show)
-        apiMock.showsToReturn = [showResult]
+        let show = Show(id: 1, name: "test", url: "https://test.com", image: nil)
+        apiMock.showsToReturn = [show]
         sut.search(for: "test")
         XCTAssertEqual(delegate.shows?.first?.id, show.id)
     }
@@ -49,8 +48,11 @@ private class DelegateMock: SearchHandlerDelegate {
 
 private class APIMock: APIProtocol {
     var errorToReturn: APIError?
-    var showsToReturn: [ShowSearchResult]?
-    func getShows(searchTerm term: String, completion: @escaping (Result<[ShowSearchResult], APIError>) -> Void) {
+    var showsToReturn: [Show]?
+    var crewToReturn: [CrewMember]?
+    var episodesToReturn: [Episode]?
+    
+    func getShows(searchTerm term: String, completion: @escaping (Result<[Show], APIError>) -> Void) {
         if let error = errorToReturn {
             completion(.failure(error))
             return
@@ -58,6 +60,25 @@ private class APIMock: APIProtocol {
         if let showResults = showsToReturn {
             completion(.success(showResults))
         }
-        
+    }
+    
+    func getCrew(showId: String, completion: @escaping (Result<[CrewMember], APIError>) -> Void) {
+        if let error = errorToReturn {
+            completion(.failure(error))
+            return
+        }
+        if let crewToReturn = crewToReturn {
+            completion(.success(crewToReturn))
+        }
+    }
+    
+    func getEpisodes(showId: String, completion: @escaping (Result<[Episode], APIError>) -> Void) {
+        if let error = errorToReturn {
+            completion(.failure(error))
+            return
+        }
+        if let episodesToReturn = episodesToReturn {
+            completion(.success(episodesToReturn))
+        }
     }
 }

@@ -65,6 +65,13 @@ class ShowCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        favouriteImageView.image = nil
+        showImageView.image = nil
+        titleLabel.text = nil
+    }
 
     func configure() {
         let inset = CGFloat(10)

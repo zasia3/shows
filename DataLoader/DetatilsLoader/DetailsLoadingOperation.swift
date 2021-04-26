@@ -8,13 +8,12 @@
 import Foundation
 import Common
 import API
-import Models
 
 open class DetailsLoadingOperation: AsynchronousOperation {
-    let api: APIProtocol
+    let api: ShowDetailsAPIProtocol
     let showId: Int
     
-    public init(api: APIProtocol, showId: Int) {
+    public init(api: ShowDetailsAPIProtocol, showId: Int) {
         self.api = api
         self.showId = showId
     }
