@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Image: Decodable, Hashable {
+public struct Image: Codable, Hashable {
     public let url: URL?
     public var localUrl: URL?
     
@@ -23,5 +23,9 @@ public struct Image: Decodable, Hashable {
         } else {
             url = nil
         }
+    }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try? container.encode(url?.absoluteString, forKey: .medium)
     }
 }

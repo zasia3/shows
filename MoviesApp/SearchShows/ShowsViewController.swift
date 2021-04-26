@@ -33,6 +33,7 @@ class ShowsViewController: UIViewController {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
         toggle.onTintColor = UIColor(named: "Accent")
+        toggle.accessibilityLabel = "Show favourites"
         return toggle
     }()
     
@@ -142,9 +143,14 @@ class ShowsViewController: UIViewController {
 
 extension ShowsViewController: UITableViewDelegate {
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.selectedShow(at: indexPath)
         showSpinner(true)
+        view.endEditing(true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -174,11 +180,7 @@ extension ShowsViewController: ShowsViewModelDelegate {
         tableView.reloadData()
     }
     func didReceiveError(_ error: APIError) {
-        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: .cancel)
-        alert.addAction(okAction)
-        present(alert, animated: true)
+        showAlert(message: error.localizedDescription)
     }
     
     func didRetrieveShowDetails(_ details: ShowDetails) {

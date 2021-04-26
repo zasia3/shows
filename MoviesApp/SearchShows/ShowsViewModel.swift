@@ -31,7 +31,7 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
     weak var delegate: ShowsViewModelDelegate?
     
     private var searchHandler: SearchHandlerProtocol
-    private var favouritesHandler: FavouritesProtocol
+    private var favouritesHandler: ShowsStorageProtocol
     private var detailsLoader: DetailsLoaderProtocol
     private var imagesLoader: ImagesLoaderProtocol
     var showFavourites = false
@@ -47,7 +47,7 @@ class ShowsViewModel: NSObject, ShowsViewModelProtocol {
 
     var currentSearchTerm: String?
     
-    init(searchHandler: SearchHandlerProtocol, favouritesHandler: FavouritesProtocol, detailsLoader: DetailsLoaderProtocol, imagesLoader: ImagesLoaderProtocol) {
+    init(searchHandler: SearchHandlerProtocol, favouritesHandler: ShowsStorageProtocol, detailsLoader: DetailsLoaderProtocol, imagesLoader: ImagesLoaderProtocol) {
         self.searchHandler = searchHandler
         self.favouritesHandler = favouritesHandler
         self.detailsLoader = detailsLoader
@@ -94,6 +94,9 @@ extension ShowsViewModel {
         cell.imageUrl = show.image?.url
         if let localUrl = show.image?.localUrl {
             cell.imageView?.image = UIImage(contentsOfFile: localUrl.path)
+        } else {
+            cell.imageView?.image = UIImage(systemName: "camera.on.rectangle")
+            cell.imageView?.tintColor = UIColor(named: "Hero")
         }
         let imageName = show.isFavourite(in: favouritesHandler) ? "star.fill" : "star"
         cell.favouriteImageView.image = UIImage(systemName: imageName)
@@ -120,6 +123,7 @@ extension ShowsViewModel: SearchHandlerDelegate {
             guard let self = self else { return }
             switch progress {
             case .downloaded(let url):
+                guard self.shows.count > index else { return }
                 self.shows[index].image?.localUrl = url
                 DispatchQueue.main.async {
                     self.delegate?.didUpdateCell(at: index)

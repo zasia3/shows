@@ -18,7 +18,7 @@ protocol ShowDetailsViewModelProtocol {
 
 class ShowDetailsViewModel: ShowDetailsViewModelProtocol {
     private(set) var showDetails: ShowDetails
-    private var favouritesHandler: FavouritesProtocol
+    private var favouritesHandler: ShowsStorageProtocol
     
     var crew: CrewMember? {
         showDetails.crew.first { $0.type == .creator } ?? showDetails.crew.first
@@ -28,7 +28,7 @@ class ShowDetailsViewModel: ShowDetailsViewModelProtocol {
         showDetails.show.isFavourite(in: favouritesHandler)
     }
     
-    init(showDetails: ShowDetails, favouritesHandler: FavouritesProtocol) {
+    init(showDetails: ShowDetails, favouritesHandler: ShowsStorageProtocol) {
         self.showDetails = showDetails
         self.favouritesHandler = favouritesHandler
     }

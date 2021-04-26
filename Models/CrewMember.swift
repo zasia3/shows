@@ -27,6 +27,11 @@ public struct CrewMember: Decodable {
         case type, person
     }
     
+    public init(type: CrewType, person: Person) {
+        self.type = type
+        self.person = person
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let typeString = try container.decode(String.self, forKey: .type)

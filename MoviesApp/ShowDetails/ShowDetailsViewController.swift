@@ -47,6 +47,7 @@ class ShowDetailsViewController: UIViewController {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
         toggle.onTintColor = UIColor(named: "Accent")
+        toggle.accessibilityLabel = "Set favourite"
         return toggle
     }()
     
@@ -105,7 +106,7 @@ class ShowDetailsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad () {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupLayout()
@@ -154,6 +155,10 @@ class ShowDetailsViewController: UIViewController {
     }
     
     @objc func tappedShowEpisodes() {
+        if viewModel.showDetails.episodes.isEmpty {
+            showAlert(message: "No episodes")
+            return
+        }
         let episodesViewController = EpisodesViewController(episodes: viewModel.showDetails.episodes)
         present(episodesViewController, animated: true, completion: nil)
     }

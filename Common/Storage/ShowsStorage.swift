@@ -1,29 +1,28 @@
 //
-//  Favourites.swift
+//  ShowsStorage.swift
 //  Common
 //
-//  Created by Joanna Zatorska on 25/04/2021.
+//  Created by Joanna Zatorska on 26/04/2021.
 //
 
 import Foundation
 
-public protocol FavouritesProtocol {
+public protocol ShowsStorageProtocol {
     func favouriteShowIds() -> [Int]
     func add(_ showId: Int)
     func delete(_ showId: Int)
     func clear()
 }
 
-public struct Favourites: FavouritesProtocol {
+public struct ShowsStorage: ShowsStorageProtocol {
     let defaults: UserDefaults
     private let showsKey = "favourite_shows"
     
-    public init(defaults: UserDefaults = UserDefaults.standard) {
+    init(defaults: UserDefaults) {
         self.defaults = defaults
     }
     
     public func favouriteShowIds() -> [Int] {
-        
         return defaults.object(forKey: showsKey) as? [Int] ?? []
     }
         

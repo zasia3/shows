@@ -9,25 +9,88 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>APITests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>Common.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
+		</dict>
+		<key>CommonTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
 		</dict>
 		<key>DataLoader.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>DataLoaderTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>Models.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>MoviesApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>AD1C3C2C2635922000CE4615</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AD1C3C9626359A0D00CE4615</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AD1C3E4926371E9F00CE4615</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AD1C3E80263725BB00CE4615</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AD1C3EA32637318100CE4615</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ADFF0FE6262AC2B900A770C9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ADFF0FFC262AC2BA00A770C9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ADFF1007262AC2BA00A770C9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ADFF1029262AC8B500A770C9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
